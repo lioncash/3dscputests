@@ -342,7 +342,6 @@ void ThumbMain(void)
 {
     printf("MOV\n");
     TESTINST2("mov  r0, r1", 1, r0, r1, 0);
-    TESTINST2("cpy  r0, r1", 1, r0, r1, 0);
     TESTINST2("mov  r0, #0", 0, r0, r1, 0);
     TESTINST2("mov  r0, #1", 0, r0, r1, 0);
     TESTCARRY
@@ -459,7 +458,7 @@ void ThumbMain(void)
     TESTINST2("lsrs r0, r1, #18", 0x00010000, r0, r1, cv);
     TESTCARRYEND
 
-        printf("ASR\n");
+    printf("ASR\n");
     TESTCARRY
     TESTINST3("asr  r0, r1, r2", 0xffffffff, 0, r0, r1, r2, cv);
     TESTINST3("asr  r0, r1, r2", 0xffffffff, 1, r0, r1, r2, cv);
