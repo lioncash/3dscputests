@@ -768,21 +768,23 @@ const unsigned int mem[] = {
 
 #define TESTINSN_cmp_f64(instruction, DD, DDval0, DDval1, DM, DMval0, DMval1) \
 { \
-  unsigned int val = 0; \
+  unsigned int out[1]; \
 \
   __asm__ volatile( \
       "vmov " #DD ", %1, %2\n\t" \
       "vmov " #DM ", %3, %4\n\t" \
-      "vmsr FPSCR, %[out]\n\t" \
+      "mov r4, #0\n\t" \
+      "vmsr FPSCR, r4\n\t" \
       instruction "\n\t" \
-      "vmrs %[out], FPSCR\n\t" \
-      : [out]"+r"(val)\
-      : "r" (DDval0), "r" (DDval1),"r" (DMval0), "r" (DMval1) \
+      "vmrs r4, FPSCR\n\t" \
+      "str r4, [%0]\n\t" \
+      : \
+      : "r"(out), "r" (DDval0), "r" (DDval1),"r" (DMval0), "r" (DMval1) \
       : #DD, #DM, "r4", "memory" \
       ); \
   printf("%s :: FPSCR 0x%08x  Dd 0x%08x %08x" \
       "  Dm 0x%08x %08x\n", \
-      instruction, val & 0xffffff60, DDval1, DDval0, DMval1, DMval0); \
+      instruction, out[0] & 0xffffff60, DDval1, DDval0, DMval1, DMval0); \
 }
 
 #define TESTINSN_cmp_f32(instruction, SD, SDval, SM, SMval) \
@@ -1271,6 +1273,12 @@ void VFPMain(void)
     TESTINSN_bin_f64("vmls.f64 d0,  d5,  d2",  d0,  d5,  i32, f2u0(NAN), f2u1(NAN), d2, i32, f2u0(-1.0), f2u1(-1.0));
     TESTINSN_bin_f64("vmls.f64 d10, d13, d15", d10, d13, i32, f2u0(NAN), f2u1(NAN), d15, i32, f2u0(0.0), f2u1(0.0));
     TESTINSN_bin_f64("vmls.f64 d10, d13, d15", d10, d13, i32, f2u0(NAN), f2u1(NAN), d15, i32, f2u0(NAN), f2u1(NAN));
+    TESTINSN_bin_f64("vmls.f64 d0,  d1,  d2",  d0,  d1,  i32, f2u0(DENORM_MIN_F64), f2u1(DENORM_MIN_F64), d2, i32, f2u0(DENORM_MIN_F64), f2u1(DENORM_MIN_F64));
+    TESTINSN_bin_f64("vmls.f64 d0,  d1,  d3",  d0,  d1,  i32, f2u0(DENORM_MIN_F64), f2u1(DENORM_MIN_F64), d3, i32, f2u0(-1.0), f2u1(-1.0));
+    TESTINSN_bin_f64("vmls.f64 d0,  d1,  d4",  d0,  d1,  i32, f2u0(DENORM_MIN_F64), f2u1(DENORM_MIN_F64), d4, i32, f2u0(0.0), f2u1(0.0));
+    TESTINSN_bin_f64("vmls.f64 d0,  d1,  d5",  d0,  d1,  i32, f2u0(DENORM_MIN_F64), f2u1(DENORM_MIN_F64), d5, i32, f2u0(NAN), f2u1(NAN));
+    TESTINSN_bin_f64("vmls.f64 d0,  d1,  d6",  d0,  d1,  i32, f2u0(DENORM_MIN_F64), f2u1(DENORM_MIN_F64), d6, i32, f2u0(INFINITY), f2u1(INFINITY));
+    TESTINSN_bin_f64("vmls.f64 d0,  d1,  d7",  d0,  d1,  i32, f2u0(DENORM_MIN_F64), f2u1(DENORM_MIN_F64), d7, i32, f2u0(-INFINITY), f2u1(-INFINITY));
     TESTINSN_bin_f64("vmls.f64 d0,  d5,  d2",  d0,  d5,  i32, f2u0(23.04), f2u1(23.04), d2, i32, f2u0(-45.5687), f2u1(-45.5687));
     TESTINSN_bin_f64("vmls.f64 d13, d14, d15", d13, d14, i32, f2u0(-347856.475), f2u1(-347856.475), d15, i32, f2u0(1346), f2u1(1346));
     TESTINSN_bin_f64("vmls.f64 d0,  d1,  d12", d0,  d1,  i32, f2u0(48755), f2u1(48755), d12, i32, f2u0(-45786.476), f2u1(-45786.476));
@@ -1322,6 +1330,12 @@ void VFPMain(void)
     TESTINSN_bin_f64("vnmls.f64 d0,  d5,  d2",  d0,  d5,  i32, f2u0(NAN), f2u1(NAN), d2, i32, f2u0(-1.0), f2u1(-1.0));
     TESTINSN_bin_f64("vnmls.f64 d10, d13, d15", d10, d13, i32, f2u0(NAN), f2u1(NAN), d15, i32, f2u0(0.0), f2u1(0.0));
     TESTINSN_bin_f64("vnmls.f64 d10, d13, d15", d10, d13, i32, f2u0(NAN), f2u1(NAN), d15, i32, f2u0(NAN), f2u1(NAN));
+    TESTINSN_bin_f64("vnmls.f64 d0,  d1,  d2",  d0,  d1,  i32, f2u0(DENORM_MIN_F64), f2u1(DENORM_MIN_F64), d2, i32, f2u0(DENORM_MIN_F64), f2u1(DENORM_MIN_F64));
+    TESTINSN_bin_f64("vnmls.f64 d0,  d1,  d3",  d0,  d1,  i32, f2u0(DENORM_MIN_F64), f2u1(DENORM_MIN_F64), d3, i32, f2u0(-1.0), f2u1(-1.0));
+    TESTINSN_bin_f64("vnmls.f64 d0,  d1,  d4",  d0,  d1,  i32, f2u0(DENORM_MIN_F64), f2u1(DENORM_MIN_F64), d4, i32, f2u0(0.0), f2u1(0.0));
+    TESTINSN_bin_f64("vnmls.f64 d0,  d1,  d5",  d0,  d1,  i32, f2u0(DENORM_MIN_F64), f2u1(DENORM_MIN_F64), d5, i32, f2u0(NAN), f2u1(NAN));
+    TESTINSN_bin_f64("vnmls.f64 d0,  d1,  d6",  d0,  d1,  i32, f2u0(DENORM_MIN_F64), f2u1(DENORM_MIN_F64), d6, i32, f2u0(INFINITY), f2u1(INFINITY));
+    TESTINSN_bin_f64("vnmls.f64 d0,  d1,  d7",  d0,  d1,  i32, f2u0(DENORM_MIN_F64), f2u1(DENORM_MIN_F64), d7, i32, f2u0(-INFINITY), f2u1(-INFINITY));
     TESTINSN_bin_f64("vnmls.f64 d10, d15, d12", d10, d15, i32, f2u0(23.04), f2u1(23.04), d12, i32, f2u0(-45.5687), f2u1(-45.5687));
     TESTINSN_bin_f64("vnmls.f64 d13, d14, d15", d13, d14, i32, f2u0(-347856.475), f2u1(-347856.475), d15, i32, f2u0(1346), f2u1(1346));
     TESTINSN_bin_f64("vnmls.f64 d10, d11, d12", d10, d11, i32, f2u0(48755), f2u1(48755), d12, i32, f2u0(-45786.476), f2u1(-45786.476));
@@ -1373,6 +1387,12 @@ void VFPMain(void)
     TESTINSN_bin_f64("vmul.f64 d0,  d5,  d2",  d0,  d5,  i32, f2u0(NAN), f2u1(NAN), d2, i32, f2u0(-1.0), f2u1(-1.0));
     TESTINSN_bin_f64("vmul.f64 d10, d13, d15", d10, d13, i32, f2u0(NAN), f2u1(NAN), d15, i32, f2u0(0.0), f2u1(0.0));
     TESTINSN_bin_f64("vmul.f64 d10, d13, d15", d10, d13, i32, f2u0(NAN), f2u1(NAN), d15, i32, f2u0(NAN), f2u1(NAN));
+    TESTINSN_bin_f64("vmul.f64 d0,  d1,  d2",  d0,  d1,  i32, f2u0(DENORM_MIN_F64), f2u1(DENORM_MIN_F64), d2, i32, f2u0(DENORM_MIN_F64), f2u1(DENORM_MIN_F64));
+    TESTINSN_bin_f64("vmul.f64 d0,  d1,  d3",  d0,  d1,  i32, f2u0(DENORM_MIN_F64), f2u1(DENORM_MIN_F64), d3, i32, f2u0(-1.0), f2u1(-1.0));
+    TESTINSN_bin_f64("vmul.f64 d0,  d1,  d4",  d0,  d1,  i32, f2u0(DENORM_MIN_F64), f2u1(DENORM_MIN_F64), d4, i32, f2u0(0.0), f2u1(0.0));
+    TESTINSN_bin_f64("vmul.f64 d0,  d1,  d5",  d0,  d1,  i32, f2u0(DENORM_MIN_F64), f2u1(DENORM_MIN_F64), d5, i32, f2u0(NAN), f2u1(NAN));
+    TESTINSN_bin_f64("vmul.f64 d0,  d1,  d6",  d0,  d1,  i32, f2u0(DENORM_MIN_F64), f2u1(DENORM_MIN_F64), d6, i32, f2u0(INFINITY), f2u1(INFINITY));
+    TESTINSN_bin_f64("vmul.f64 d0,  d1,  d7",  d0,  d1,  i32, f2u0(DENORM_MIN_F64), f2u1(DENORM_MIN_F64), d7, i32, f2u0(-INFINITY), f2u1(-INFINITY));
     TESTINSN_bin_f64("vmul.f64 d0,  d15, d12", d0,  d15, i32, f2u0(23.04), f2u1(23.04), d12, i32, f2u0(-45.5687), f2u1(-45.5687));
     TESTINSN_bin_f64("vmul.f64 d13, d14, d15", d13, d14, i32, f2u0(-347856.475), f2u1(-347856.475), d15, i32, f2u0(1346), f2u1(1346));
     TESTINSN_bin_f64("vmul.f64 d0,  d11, d12", d0,  d11, i32, f2u0(48755), f2u1(48755), d12, i32, f2u0(-45786.476), f2u1(-45786.476));
@@ -1424,6 +1444,12 @@ void VFPMain(void)
     TESTINSN_bin_f64("vnmul.f64 d0,  d5,  d2",  d0,  d5,  i32, f2u0(NAN), f2u1(NAN), d2, i32, f2u0(-1.0), f2u1(-1.0));
     TESTINSN_bin_f64("vnmul.f64 d10, d13, d15", d10, d13, i32, f2u0(NAN), f2u1(NAN), d15, i32, f2u0(0.0), f2u1(0.0));
     TESTINSN_bin_f64("vnmul.f64 d10, d13, d15", d10, d13, i32, f2u0(NAN), f2u1(NAN), d15, i32, f2u0(NAN), f2u1(NAN));
+    TESTINSN_bin_f64("vnmul.f64 d0,  d1,  d2",  d0,  d1,  i32, f2u0(DENORM_MIN_F64), f2u1(DENORM_MIN_F64), d2, i32, f2u0(DENORM_MIN_F64), f2u1(DENORM_MIN_F64));
+    TESTINSN_bin_f64("vnmul.f64 d0,  d1,  d3",  d0,  d1,  i32, f2u0(DENORM_MIN_F64), f2u1(DENORM_MIN_F64), d3, i32, f2u0(-1.0), f2u1(-1.0));
+    TESTINSN_bin_f64("vnmul.f64 d0,  d1,  d4",  d0,  d1,  i32, f2u0(DENORM_MIN_F64), f2u1(DENORM_MIN_F64), d4, i32, f2u0(0.0), f2u1(0.0));
+    TESTINSN_bin_f64("vnmul.f64 d0,  d1,  d5",  d0,  d1,  i32, f2u0(DENORM_MIN_F64), f2u1(DENORM_MIN_F64), d5, i32, f2u0(NAN), f2u1(NAN));
+    TESTINSN_bin_f64("vnmul.f64 d0,  d1,  d6",  d0,  d1,  i32, f2u0(DENORM_MIN_F64), f2u1(DENORM_MIN_F64), d6, i32, f2u0(INFINITY), f2u1(INFINITY));
+    TESTINSN_bin_f64("vnmul.f64 d0,  d1,  d7",  d0,  d1,  i32, f2u0(DENORM_MIN_F64), f2u1(DENORM_MIN_F64), d7, i32, f2u0(-INFINITY), f2u1(-INFINITY));
     TESTINSN_bin_f64("vnmul.f64 d10, d15, d12", d10, d15, i32, f2u0(23.04), f2u1(23.04), d12, i32, f2u0(-45.5687), f2u1(-45.5687));
     TESTINSN_bin_f64("vnmul.f64 d13, d14, d15", d13, d14, i32, f2u0(-347856.475), f2u1(-347856.475), d15, i32, f2u0(1346), f2u1(1346));
     TESTINSN_bin_f64("vnmul.f64 d2,  d3,  d12", d2,  d3,  i32, f2u0(48755), f2u1(48755), d12, i32, f2u0(-45786.476), f2u1(-45786.476));
@@ -1449,6 +1475,12 @@ void VFPMain(void)
     TESTINSN_bin_f32("vnmul.f32 s0,  s5,  s2",  s0,  s5,  i32, f2u(NAN), s2, i32, f2u(-1.0));
     TESTINSN_bin_f32("vnmul.f32 s10, s13, s15", s10, s13, i32, f2u(NAN), s15, i32, f2u(0.0));
     TESTINSN_bin_f32("vnmul.f32 s10, s13, s15", s10, s13, i32, f2u(NAN), s15, i32, f2u(NAN));
+    TESTINSN_bin_f32("vnmul.f32 s0,  s1,  s2",  s0,  s1,  i32, f2u(DENORM_MIN_F32), s2, i32, f2u(DENORM_MIN_F32));
+    TESTINSN_bin_f32("vnmul.f32 s0,  s1,  s3",  s0,  s1,  i32, f2u(DENORM_MIN_F32), s3, i32, f2u(-1.0));
+    TESTINSN_bin_f32("vnmul.f32 s0,  s1,  s4",  s0,  s1,  i32, f2u(DENORM_MIN_F32), s4, i32, f2u(0.0));
+    TESTINSN_bin_f32("vnmul.f32 s0,  s1,  s5",  s0,  s1,  i32, f2u(DENORM_MIN_F32), s5, i32, f2u(NAN));
+    TESTINSN_bin_f32("vnmul.f32 s0,  s1,  s6",  s0,  s1,  i32, f2u(DENORM_MIN_F32), s6, i32, f2u(INFINITY));
+    TESTINSN_bin_f32("vnmul.f32 s0,  s1,  s7",  s0,  s1,  i32, f2u(DENORM_MIN_F32), s7, i32, f2u(-INFINITY));
     TESTINSN_bin_f32("vnmul.f32 s20, s25, s22", s20, s25, i32, f2u(23.04), s22, i32, f2u(-45.5687));
     TESTINSN_bin_f32("vnmul.f32 s23, s24, s25", s23, s24, i32, f2u(-347856.475), s25, i32, f2u(1346));
     TESTINSN_bin_f32("vnmul.f32 s20, s31, s12", s20, s31, i32, f2u(48755), s12, i32, f2u(-45786.476));
@@ -1475,6 +1507,12 @@ void VFPMain(void)
     TESTINSN_bin_f64("vadd.f64 d0,  d5,  d2",  d0,  d5,  i32, f2u0(NAN), f2u1(NAN), d2, i32, f2u0(-1.0), f2u1(-1.0));
     TESTINSN_bin_f64("vadd.f64 d10, d13, d15", d10, d13, i32, f2u0(NAN), f2u1(NAN), d15, i32, f2u0(0.0), f2u1(0.0));
     TESTINSN_bin_f64("vadd.f64 d10, d13, d15", d10, d13, i32, f2u0(NAN), f2u1(NAN), d15, i32, f2u0(NAN), f2u1(NAN));
+    TESTINSN_bin_f64("vadd.f64 d0,  d1,  d2",  d0,  d1,  i32, f2u0(DENORM_MIN_F64), f2u1(DENORM_MIN_F64), d2, i32, f2u0(DENORM_MIN_F64), f2u1(DENORM_MIN_F64));
+    TESTINSN_bin_f64("vadd.f64 d0,  d1,  d3",  d0,  d1,  i32, f2u0(DENORM_MIN_F64), f2u1(DENORM_MIN_F64), d3, i32, f2u0(-1.0), f2u1(-1.0));
+    TESTINSN_bin_f64("vadd.f64 d0,  d1,  d4",  d0,  d1,  i32, f2u0(DENORM_MIN_F64), f2u1(DENORM_MIN_F64), d4, i32, f2u0(0.0), f2u1(0.0));
+    TESTINSN_bin_f64("vadd.f64 d0,  d1,  d5",  d0,  d1,  i32, f2u0(DENORM_MIN_F64), f2u1(DENORM_MIN_F64), d5, i32, f2u0(NAN), f2u1(NAN));
+    TESTINSN_bin_f64("vadd.f64 d0,  d1,  d6",  d0,  d1,  i32, f2u0(DENORM_MIN_F64), f2u1(DENORM_MIN_F64), d6, i32, f2u0(INFINITY), f2u1(INFINITY));
+    TESTINSN_bin_f64("vadd.f64 d0,  d1,  d7",  d0,  d1,  i32, f2u0(DENORM_MIN_F64), f2u1(DENORM_MIN_F64), d7, i32, f2u0(-INFINITY), f2u1(-INFINITY));
     TESTINSN_bin_f64("vadd.f64 d10, d15, d12", d10, d15, i32, f2u0(23.04), f2u1(23.04), d12, i32, f2u0(-45.5687), f2u1(-45.5687));
     TESTINSN_bin_f64("vadd.f64 d13, d14, d15", d13, d14, i32, f2u0(-347856.475), f2u1(-347856.475), d15, i32, f2u0(1346), f2u1(1346));
     TESTINSN_bin_f64("vadd.f64 d10, d11, d12", d10, d11, i32, f2u0(48755), f2u1(48755), d12, i32, f2u0(-45786.476), f2u1(-45786.476));
@@ -1500,6 +1538,12 @@ void VFPMain(void)
     TESTINSN_bin_f32("vadd.f32 s0,  s5,  s2",  s0,  s5,  i32, f2u(NAN), s2, i32, f2u(-1.0));
     TESTINSN_bin_f32("vadd.f32 s10, s13, s15", s10, s13, i32, f2u(NAN), s15, i32, f2u(0.0));
     TESTINSN_bin_f32("vadd.f32 s10, s13, s15", s10, s13, i32, f2u(NAN), s15, i32, f2u(NAN));
+    TESTINSN_bin_f32("vadd.f32 s0,  s1,  s2",  s0,  s1,  i32, f2u(DENORM_MIN_F32), s2, i32, f2u(DENORM_MIN_F32));
+    TESTINSN_bin_f32("vadd.f32 s0,  s1,  s3",  s0,  s1,  i32, f2u(DENORM_MIN_F32), s3, i32, f2u(-1.0));
+    TESTINSN_bin_f32("vadd.f32 s0,  s1,  s4",  s0,  s1,  i32, f2u(DENORM_MIN_F32), s4, i32, f2u(0.0));
+    TESTINSN_bin_f32("vadd.f32 s0,  s1,  s5",  s0,  s1,  i32, f2u(DENORM_MIN_F32), s5, i32, f2u(NAN));
+    TESTINSN_bin_f32("vadd.f32 s0,  s1,  s6",  s0,  s1,  i32, f2u(DENORM_MIN_F32), s6, i32, f2u(INFINITY));
+    TESTINSN_bin_f32("vadd.f32 s0,  s1,  s7",  s0,  s1,  i32, f2u(DENORM_MIN_F32), s7, i32, f2u(-INFINITY));
     TESTINSN_bin_f32("vadd.f32 s20, s25, s22", s20, s25, i32, f2u(23.04), s22, i32, f2u(-45.5687));
     TESTINSN_bin_f32("vadd.f32 s23, s24, s25", s23, s24, i32, f2u(-347856.475), s25, i32, f2u(1346));
     TESTINSN_bin_f32("vadd.f32 s20, s31, s12", s20, s31, i32, f2u(48755), s12, i32, f2u(-45786.476));
@@ -1526,6 +1570,12 @@ void VFPMain(void)
     TESTINSN_bin_f64("vsub.f64 d0,  d5,  d2",  d0,  d5,  i32, f2u0(NAN), f2u1(NAN), d2, i32, f2u0(-1.0), f2u1(-1.0));
     TESTINSN_bin_f64("vsub.f64 d10, d13, d15", d10, d13, i32, f2u0(NAN), f2u1(NAN), d15, i32, f2u0(0.0), f2u1(0.0));
     TESTINSN_bin_f64("vsub.f64 d10, d13, d15", d10, d13, i32, f2u0(NAN), f2u1(NAN), d15, i32, f2u0(NAN), f2u1(NAN));
+    TESTINSN_bin_f64("vsub.f64 d0,  d1,  d2",  d0,  d1,  i32, f2u0(DENORM_MIN_F64), f2u1(DENORM_MIN_F64), d2, i32, f2u0(DENORM_MIN_F64), f2u1(DENORM_MIN_F64));
+    TESTINSN_bin_f64("vsub.f64 d0,  d1,  d3",  d0,  d1,  i32, f2u0(DENORM_MIN_F64), f2u1(DENORM_MIN_F64), d3, i32, f2u0(-1.0), f2u1(-1.0));
+    TESTINSN_bin_f64("vsub.f64 d0,  d1,  d4",  d0,  d1,  i32, f2u0(DENORM_MIN_F64), f2u1(DENORM_MIN_F64), d4, i32, f2u0(0.0), f2u1(0.0));
+    TESTINSN_bin_f64("vsub.f64 d0,  d1,  d5",  d0,  d1,  i32, f2u0(DENORM_MIN_F64), f2u1(DENORM_MIN_F64), d5, i32, f2u0(NAN), f2u1(NAN));
+    TESTINSN_bin_f64("vsub.f64 d0,  d1,  d6",  d0,  d1,  i32, f2u0(DENORM_MIN_F64), f2u1(DENORM_MIN_F64), d6, i32, f2u0(INFINITY), f2u1(INFINITY));
+    TESTINSN_bin_f64("vsub.f64 d0,  d1,  d7",  d0,  d1,  i32, f2u0(DENORM_MIN_F64), f2u1(DENORM_MIN_F64), d7, i32, f2u0(-INFINITY), f2u1(-INFINITY));
     TESTINSN_bin_f64("vsub.f64 d0,  d15, d12", d0,  d15, i32, f2u0(23.04), f2u1(23.04), d12, i32, f2u0(-45.5687), f2u1(-45.5687));
     TESTINSN_bin_f64("vsub.f64 d13, d14, d15", d13, d14, i32, f2u0(-347856.475), f2u1(-347856.475), d15, i32, f2u0(1346), f2u1(1346));
     TESTINSN_bin_f64("vsub.f64 d0,  d11, d12", d0,  d11, i32, f2u0(48755), f2u1(48755), d12, i32, f2u0(-45786.476), f2u1(-45786.476));
@@ -1551,6 +1601,12 @@ void VFPMain(void)
     TESTINSN_bin_f32("vsub.f32 s0,  s5,  s2",  s0,  s5,  i32, f2u(NAN), s2, i32, f2u(-1.0));
     TESTINSN_bin_f32("vsub.f32 s10, s13, s15", s10, s13, i32, f2u(NAN), s15, i32, f2u(0.0));
     TESTINSN_bin_f32("vsub.f32 s10, s13, s15", s10, s13, i32, f2u(NAN), s15, i32, f2u(NAN));
+    TESTINSN_bin_f32("vsub.f32 s0,  s1,  s2",  s0,  s1,  i32, f2u(DENORM_MIN_F32), s2, i32, f2u(DENORM_MIN_F32));
+    TESTINSN_bin_f32("vsub.f32 s0,  s1,  s3",  s0,  s1,  i32, f2u(DENORM_MIN_F32), s3, i32, f2u(-1.0));
+    TESTINSN_bin_f32("vsub.f32 s0,  s1,  s4",  s0,  s1,  i32, f2u(DENORM_MIN_F32), s4, i32, f2u(0.0));
+    TESTINSN_bin_f32("vsub.f32 s0,  s1,  s5",  s0,  s1,  i32, f2u(DENORM_MIN_F32), s5, i32, f2u(NAN));
+    TESTINSN_bin_f32("vsub.f32 s0,  s1,  s6",  s0,  s1,  i32, f2u(DENORM_MIN_F32), s6, i32, f2u(INFINITY));
+    TESTINSN_bin_f32("vsub.f32 s0,  s1,  s7",  s0,  s1,  i32, f2u(DENORM_MIN_F32), s7, i32, f2u(-INFINITY));
     TESTINSN_bin_f32("vsub.f32 s20, s25, s22", s20, s25, i32, f2u(23.04), s22, i32, f2u(-45.5687));
     TESTINSN_bin_f32("vsub.f32 s23, s24, s25", s23, s24, i32, f2u(-347856.475), s25, i32, f2u(1346));
     TESTINSN_bin_f32("vsub.f32 s20, s31, s12", s20, s31, i32, f2u(48755), s12, i32, f2u(-45786.476));
@@ -1572,6 +1628,12 @@ void VFPMain(void)
     TESTINSN_bin_f32("vsub.f32 s10, s23, s15", s10, s23, i32, f2u(INFINITY), s15, i32, f2u(0.0));
 
     printf("---- VDIV (fp) ----\n");
+    TESTINSN_bin_f64("vdiv.f64 d0,  d1,  d2",  d0,  d1,  i32, f2u0(DENORM_MIN_F64), f2u1(DENORM_MIN_F64), d2, i32, f2u0(DENORM_MIN_F64), f2u1(DENORM_MIN_F64));
+    TESTINSN_bin_f64("vdiv.f64 d0,  d1,  d3",  d0,  d1,  i32, f2u0(DENORM_MIN_F64), f2u1(DENORM_MIN_F64), d3, i32, f2u0(-1.0), f2u1(-1.0));
+    TESTINSN_bin_f64("vdiv.f64 d0,  d1,  d4",  d0,  d1,  i32, f2u0(DENORM_MIN_F64), f2u1(DENORM_MIN_F64), d4, i32, f2u0(0.0), f2u1(0.0));
+    TESTINSN_bin_f64("vdiv.f64 d0,  d1,  d5",  d0,  d1,  i32, f2u0(DENORM_MIN_F64), f2u1(DENORM_MIN_F64), d5, i32, f2u0(NAN), f2u1(NAN));
+    TESTINSN_bin_f64("vdiv.f64 d0,  d1,  d6",  d0,  d1,  i32, f2u0(DENORM_MIN_F64), f2u1(DENORM_MIN_F64), d6, i32, f2u0(INFINITY), f2u1(INFINITY));
+    TESTINSN_bin_f64("vdiv.f64 d0,  d1,  d7",  d0,  d1,  i32, f2u0(DENORM_MIN_F64), f2u1(DENORM_MIN_F64), d7, i32, f2u0(-INFINITY), f2u1(-INFINITY));
     TESTINSN_bin_f64("vdiv.f64 d10, d15, d12", d10, d15, i32, f2u0(23.04), f2u1(23.04), d12, i32, f2u0(-45.5687), f2u1(-45.5687));
     TESTINSN_bin_f64("vdiv.f64 d13, d14, d15", d13, d14, i32, f2u0(-347856.475), f2u1(-347856.475), d15, i32, f2u0(1346), f2u1(1346));
     TESTINSN_bin_f64("vdiv.f64 d10, d11, d12", d10, d11, i32, f2u0(48755), f2u1(48755), d12, i32, f2u0(-45786.476), f2u1(-45786.476));
@@ -1592,6 +1654,12 @@ void VFPMain(void)
     TESTINSN_bin_f64("vdiv.f64 d0,  d13, d15", d0,  d13, i32, f2u0(-INFINITY), f2u1(-INFINITY), d15, i32, f2u0(0.0), f2u1(0.0));
     TESTINSN_bin_f64("vdiv.f64 d10, d13, d15", d10, d13, i32, f2u0(INFINITY), f2u1(INFINITY), d15, i32, f2u0(0.0), f2u1(0.0));
 
+    TESTINSN_bin_f32("vdiv.f32 s0,  s1,  s2",  s0,  s1,  i32, f2u(DENORM_MIN_F32), s2, i32, f2u(DENORM_MIN_F32));
+    TESTINSN_bin_f32("vdiv.f32 s0,  s1,  s3",  s0,  s1,  i32, f2u(DENORM_MIN_F32), s3, i32, f2u(-1.0));
+    TESTINSN_bin_f32("vdiv.f32 s0,  s1,  s4",  s0,  s1,  i32, f2u(DENORM_MIN_F32), s4, i32, f2u(0.0));
+    TESTINSN_bin_f32("vdiv.f32 s0,  s1,  s5",  s0,  s1,  i32, f2u(DENORM_MIN_F32), s5, i32, f2u(NAN));
+    TESTINSN_bin_f32("vdiv.f32 s0,  s1,  s6",  s0,  s1,  i32, f2u(DENORM_MIN_F32), s6, i32, f2u(INFINITY));
+    TESTINSN_bin_f32("vdiv.f32 s0,  s1,  s7",  s0,  s1,  i32, f2u(DENORM_MIN_F32), s7, i32, f2u(-INFINITY));
     TESTINSN_bin_f32("vdiv.f32 s20, s25, s22", s20, s25, i32, f2u(23.04), s22, i32, f2u(-45.5687));
     TESTINSN_bin_f32("vdiv.f32 s23, s24, s25", s23, s24, i32, f2u(-347856.475), s25, i32, f2u(1346));
     TESTINSN_bin_f32("vdiv.f32 s20, s31, s12", s20, s31, i32, f2u(48755), s12, i32, f2u(-45786.476));
