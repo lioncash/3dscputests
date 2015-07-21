@@ -29,38 +29,26 @@
       ".word 0xEEF14A10 @ vmrs r4, FPSCR\n\t"
 #endif
 
-
-
 static inline unsigned int f2u(float x) {
-    union {
-        float f;
-        unsigned int u;
-    } cvt;
-    cvt.f = x;
-    return cvt.u;
+    unsigned int u = 0;
+    std::memcpy(&u, &x, sizeof(float));
+    return u;
 }
 
 static inline unsigned int f2u0(double x) {
-    union {
-        double f;
-        unsigned int u[2];
-    } cvt;
-    cvt.f = x;
-    return cvt.u[0];
+    unsigned int u[2] = {};
+    std::memcpy(&u, &x, sizeof(double));
+    return u[0];
 }
 
 static inline unsigned int f2u1(double x) {
-    union {
-        double f;
-        unsigned int u[2];
-    } cvt;
-    cvt.f = x;
-    return cvt.u[1];
+    unsigned int u[2] = {};
+    std::memcpy(&u, &x, sizeof(double));
+    return u[1];
 }
 
-/* test macros to generate and output the result of a single instruction */
-
-const unsigned int mem[] = {
+// Test macros to generate and output the result of a single instruction
+static const unsigned int mem[16] = {
     0x121f1e1f, 0x131b1a1b, 0x141c1f1c, 0x151d191d,
     0x232f2e2f, 0x242c2b2b, 0x252a2e2b, 0x262d2d2a,
     0x3f343f3e, 0x3e353d3c, 0x363a3c3b, 0x3b373b3a,
