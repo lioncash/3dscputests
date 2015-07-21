@@ -1071,6 +1071,17 @@ void VFPMain(void)
 {
     do_vldm_vstm_check();
 
+// Enable for testing float instructions with
+// Default NaN mode and Flush-To-Zero mode.
+#if 0
+    asm volatile (
+      "VMRS r1, FPSCR\n"
+      "ORR  r1, r1, #(1 << 24)\n"
+      "ORR  r1, r1, #(1 << 25)\n"
+      "VMSR FPSCR, r1\n"
+      );
+#endif
+
 #if 0 // Not supported on the 3DS
     printf("---- VMOV (ARM core register to scalar) ----\n");
     TESTINSN_core_to_scalar("vmov.32 d0[0],  r5", d0,  r5, f2u(13));
