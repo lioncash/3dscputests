@@ -364,8 +364,9 @@ void ThumbMain(void)
     TESTINST3("adds r0, r1, r2", 0x80000000, 0, r0, r1, r2, 0);
 
     printf("ADC\n");
-    TESTINST3("adcs r0, r1, r2", 0, 0, r0, r1, r2, 0);
-    TESTINST3("adcs r0, r1, r2", 0, 0, r0, r1, r2, 1);
+    TESTCARRY
+    TESTINST3("adcs r0, r1, r2", 0, 0, r0, r1, r2, cv);
+    TESTCARRYEND
 
     printf("LSL\n");
     TESTINST3("lsl  r0, r1, r2", 0xffffffff, 0, r0, r1, r2, 0);

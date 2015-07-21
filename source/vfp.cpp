@@ -1850,8 +1850,8 @@ void VFPMain(void)
     TESTINSN_cvt_f64_i32("vcvt.f64.s32 d12, s20", d12, s20, f2u(INFINITY));
     TESTINSN_cvt_f64_i32("vcvt.f64.s32 d11, s11", d11, s11, f2u(NAN));
 
-    printf("---- VCVT (fixed <-> fp) ----\n");
 #if 0 // Not supported on the 3DS (VFPv3+).
+    printf("---- VCVT (fixed <-> fp) ----\n");
     TESTINSN_un_f32("vcvt.u32.f32 s0,  s0,  #3",  s0,  s0, i32, f2u(3.2));
     TESTINSN_un_f32("vcvt.u32.f32 s11, s11, #1",  s11, s11, i32, f2u(3e22));
     TESTINSN_un_f32("vcvt.u32.f32 s15, s15, #32", s15, s15, i32, f2u(3e9));

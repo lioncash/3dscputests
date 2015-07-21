@@ -70,9 +70,6 @@ int main(int argc, char **argv)
 	fsInit(); //needed for filesystem stuff
 	sdmcInit();
 
-	// Line buffered
-	setvbuf(stdout, NULL, _IOLBF, 0);
-
 	PrintConsole topScreen;
 	PrintConsole bottomScreen;
 
