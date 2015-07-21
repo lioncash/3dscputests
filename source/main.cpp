@@ -51,13 +51,6 @@ static bool TryOpeningNewFile(const char* path)
 	return (f != nullptr);
 }
 
-// Prototypes
-void DumpCP15Registers(bool);
-void IntegerMain(void);
-void ThumbMain(void);
-void V6MediaMain(void);
-void VFPMain(void);
-
 // Used to store the CPSR processor mode string.
 // Visually displaying what mode the processor is in can be helpful.
 static const char* GetCPSRMode()
@@ -77,6 +70,13 @@ static const char* GetCPSRMode()
 	// If we hit here, something is very off.
 	return "3DS is drunk";
 }
+
+// Test prototypes
+void DumpCP15Registers(bool);
+void IntegerMain(void);
+void ThumbMain(void);
+void V6MediaMain(void);
+void VFPMain(void);
 
 int main(int argc, char **argv)
 {
