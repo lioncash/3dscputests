@@ -5,9 +5,9 @@
 #include <string.h>
 #include <sys/iosupport.h>
 
-static FILE* f = NULL;
+static FILE* f = nullptr;
 
-static ssize_t file_write(struct _reent* r, int fd, const char* ptr, size_t len)
+static ssize_t file_write(_reent* r, int fd, const char* ptr, size_t len)
 {
 	if (len > 1)
 	{
@@ -19,18 +19,18 @@ static ssize_t file_write(struct _reent* r, int fd, const char* ptr, size_t len)
 static const devoptab_t dotab_file = {
 	"file",
 	0,
-	NULL,
-	NULL,
+	nullptr,
+	nullptr,
 	file_write,
-	NULL,
-	NULL,
-	NULL
+	nullptr,
+	nullptr,
+	nullptr
 };
 
 static bool TryOpeningNewFile(const char* path)
 {
 	f = fopen(path, "w");
-	return (f != NULL);
+	return (f != nullptr);
 }
 
 // Prototypes
@@ -65,7 +65,7 @@ int main(int argc, char **argv)
 	// Initialize services
 	srvInit();
 	aptInit();
-	hidInit(NULL);
+	hidInit(nullptr);
 	gfxInitDefault();
 	fsInit(); //needed for filesystem stuff
 	sdmcInit();
