@@ -192,12 +192,13 @@ static const unsigned int mem[16] = {
   unsigned int out[2]; \
 \
   __asm__ volatile( \
-      "vmov " #DD ", %3, %4 \n\t" \
+      "vmov " #DD "[0], %3 \n\t" \
+      "vmov " #DD "[1], %3 \n\t" \
       "vmov " #DM ", %1, %2 \n\t" \
       instruction "\n\t" \
       "vstmia %0, {" #DD "}\n\t" \
       : \
-      : "r" (out), "r" (DMval0), "r" (DMval1), "r" (0x55555555), "r" (0x55555555) \
+      : "r" (out), "r" (DMval0), "r" (DMval1), "r" (0x55555555) \
       : #DD, #DM, "memory" \
       ); \
   printf("%s :: Dd 0x%08x 0x%08x  Dm (" #DMtype ")0x%08x %08x\n", \
@@ -721,7 +722,8 @@ static const unsigned int mem[16] = {
   unsigned int out[2]; \
 \
   __asm__ volatile( \
-      "vmov " #QD ", %5, %5 \n\t" \
+      "vmov " #QD "[0], %5\n\t" \
+      "vmov " #QD "[1], %5\n\t" \
       "vmov " #QM ", %1, %2 \n\t" \
       "vmov " #QN ", %3, %4 \n\t" \
       instruction "\n\t" \
@@ -1452,7 +1454,7 @@ void VFPMain(void)
     TESTINSN_bin_f64("vnmul.f64 d10, d15, d12", d10, d15, i32, f2u0(23.04), f2u1(23.04), d12, i32, f2u0(-45.5687), f2u1(-45.5687));
     TESTINSN_bin_f64("vnmul.f64 d13, d14, d15", d13, d14, i32, f2u0(-347856.475), f2u1(-347856.475), d15, i32, f2u0(1346), f2u1(1346));
     TESTINSN_bin_f64("vnmul.f64 d2,  d3,  d12", d2,  d3,  i32, f2u0(48755), f2u1(48755), d12, i32, f2u0(-45786.476), f2u1(-45786.476));
-    TESTINSN_bin_f64("vnmul.f64 d1,  d5,  d7",  d1,  d5,  i32, f2u0(95867.76), f2u1(95867.76), d27, i32, f2u0(17065), f2u1(17065));
+    TESTINSN_bin_f64("vnmul.f64 d1,  d5,  d7",  d1,  d5,  i32, f2u0(95867.76), f2u1(95867.76), d7, i32, f2u0(17065), f2u1(17065));
     TESTINSN_bin_f64("vnmul.f64 d0,  d15, d2",  d0,  d15, i32, f2u0(-45667.24), f2u1(-45667.24), d2, i32, f2u0(-248562.76), f2u1(-248562.76));
     TESTINSN_bin_f64("vnmul.f64 d13, d14, d5",  d13, d14, i32, f2u0(24), f2u1(24), d5, i32, f2u0(1346), f2u1(1346));
     TESTINSN_bin_f64("vnmul.f64 d10, d11, d2",  d10, d11, i32, f2u0(48755), f2u1(48755), d2, i32, f2u0(1089), f2u1(1089));
@@ -1766,7 +1768,7 @@ void VFPMain(void)
     TESTINSN_un_f32("vsqrt.f32 s18, s17", s18, s17, i32, f2u(INFINITY));
     TESTINSN_un_f32("vsqrt.f32 s30, s1",  s30, s1,  i32, f2u(-INFINITY));
     TESTINSN_un_f32("vsqrt.f32 s8,  s27", s8,  s27, i32, f2u(-INFINITY));
-    TESTINSN_un_f32("vsqrt.f32 s27, s6",  s20, s1,  i32, f2u(FLT_MIN / 2));
+    TESTINSN_un_f32("vsqrt.f32 s27, s6",  s27, s6,  i32, f2u(FLT_MIN / 2));
     TESTINSN_un_f32("vsqrt.f32 s20, s1",  s20, s1,  i32, f2u(76543.001002));
     TESTINSN_un_f32("vsqrt.f32 s28, s7",  s28, s7,  i32, f2u(-4856.234));
     TESTINSN_un_f32("vsqrt.f32 s2,  s19", s2,  s19, i32, f2u(87.098217));
@@ -2372,7 +2374,7 @@ void VFPMain(void)
 
     TESTINSN_vmov_2core_double("vmov r2,  r9,  d0",  r2,  r9,  d0,  f2u0(INFINITY), f2u1(INFINITY));
     TESTINSN_vmov_2core_double("vmov r6,  r9, d10",  r6,  r9, d10,  0x14534c, 0x41ffb6);
-    TESTINSN_vmov_2core_double("vmov r0,  r9, d20",  r0,  r9, d20,  f2u0(NAN), f2u1(NAN));
+    TESTINSN_vmov_2core_double("vmov r0,  r9, d15",  r0,  r9, d15,  f2u0(NAN), f2u1(NAN));
 
     printf("----- VPUSH, VPOP -----\n");
     TESTINSN_vpush_vpop_f32(s3, 0x00aaaaaa, s4, 0x00bbbbbb, s5, 0x00cccccc, s0, s1,  s2);
