@@ -2079,14 +2079,14 @@ void VFPMain(void)
     TESTINSN_vldr_f64("vldr d9,  [r6, #+4]",  d9,  r6,  (long) numbers + 8, 4);
     TESTINSN_vldr_f64("vldr d16, [r9, #-4]",  d16, r9,  (long) numbers + 8, -4);
     TESTINSN_vldr_f64("vldr d30, [r12]",      d30, r12, (long) numbers + 8, 0);
-    TESTINSN_vldr_f64("vldr d22, [r9, #+8]", d22, r9, (long) numbers + 8, 8);
+    TESTINSN_vldr_f64("vldr d22, [r9, #+8]",  d22, r9,  (long) numbers + 8, 8);
     TESTINSN_vldr_f64("vldr d29, [r2, #-8]",  d29, r2,  (long) numbers + 8, -8);
     TESTINSN_vldr_f64("vldr d8,  [r8, #+8]",  d8,  r8,  (long) numbers + 8, 8);
     TESTINSN_vldr_f64("vldr d11, [r12, #-4]", d11, r12, (long) numbers + 8, -4);
     TESTINSN_vldr_f64("vldr d18, [r3]",       d18, r3,  (long) numbers + 8, 0);
     TESTINSN_vldr_f64("vldr d5,  [r10, #+8]", d5,  r10, (long) numbers + 8, 8);
     TESTINSN_vldr_f64("vldr d17, [r10]",      d17, r10, (long) numbers + 8, 0);
-    TESTINSN_vldr_f64("vldr d9,  [r9, #-4]", d9,  r9, (long) numbers + 8, -4);
+    TESTINSN_vldr_f64("vldr d9,  [r9, #-4]",  d9,  r9,  (long) numbers + 8, -4);
     TESTINSN_vldr_f64("vldr d29, [r4, #-8]",  d29, r4,  (long) numbers + 8, -8);
     TESTINSN_vldr_f64("vldr d21, [r6, #+4]",  d21, r6,  (long) numbers + 8, 4);
     TESTINSN_vldr_f64("vldr d8,  [r4]",       d8,  r4,  (long) numbers + 8, 0);
@@ -2097,14 +2097,14 @@ void VFPMain(void)
     TESTINSN_vldr_f32("vldr s9,  [r6, #+4]",  s9,  r6,  (long) numbers + 8, 4);
     TESTINSN_vldr_f32("vldr s16, [r9, #-4]",  s16, r9,  (long) numbers + 8, -4);
     TESTINSN_vldr_f32("vldr s30, [r12]",      s30, r12, (long) numbers + 8, 0);
-    TESTINSN_vldr_f32("vldr s22, [r9, #+8]", s22, r9, (long) numbers + 8, 8);
+    TESTINSN_vldr_f32("vldr s22, [r9, #+8]",  s22, r9,  (long) numbers + 8, 8);
     TESTINSN_vldr_f32("vldr s29, [r2, #-8]",  s29, r2,  (long) numbers + 8, -8);
     TESTINSN_vldr_f32("vldr s8,  [r8, #+8]",  s8,  r8,  (long) numbers + 8, 8);
     TESTINSN_vldr_f32("vldr s11, [r12, #-4]", s11, r12, (long) numbers + 8, -4);
     TESTINSN_vldr_f32("vldr s18, [r3]",       s18, r3,  (long) numbers + 8, 0);
     TESTINSN_vldr_f32("vldr s5,  [r10, #+8]", s5,  r10, (long) numbers + 8, 8);
     TESTINSN_vldr_f32("vldr s17, [r10]",      s17, r10, (long) numbers + 8, 0);
-    TESTINSN_vldr_f32("vldr s9,  [r9, #-4]", s9,  r9, (long) numbers + 8, -4);
+    TESTINSN_vldr_f32("vldr s9,  [r9, #-4]",  s9,  r9,  (long) numbers + 8, -4);
     TESTINSN_vldr_f32("vldr s29, [r4, #-8]",  s29, r4,  (long) numbers + 8, -8);
     TESTINSN_vldr_f32("vldr s21, [r6, #+4]",  s21, r6,  (long) numbers + 8, 4);
     TESTINSN_vldr_f32("vldr s8,  [r4]",       s8,  r4,  (long) numbers + 8, 0);
@@ -2115,7 +2115,7 @@ void VFPMain(void)
     printf("---- VLDM (Increment After, writeback) ----\n");
     TESTINSN_VLDMIAWB(r6,  d17, d7);
     TESTINSN_VLDMIAWB(r4,  d11, d23);
-    TESTINSN_VLDMIAWB(r9, d29, d12);
+    TESTINSN_VLDMIAWB(r9,  d29, d12);
     TESTINSN_VLDMIAWB(r9,  d0,  d30);
     TESTINSN_VLDMIAWB(r12, d8,  d24);
     TESTINSN_VLDMIAWB(r3,  d27, d13);
@@ -2134,21 +2134,21 @@ void VFPMain(void)
     TESTINSN_vstr64("vstr d9,  [r6, #+4]",  d9,  0xa0, r6,  (long) numbers + 8, 4);
     TESTINSN_vstr64("vstr d16, [r9, #-4]",  d16, 0xb1, r9,  (long) numbers + 8, -4);
     TESTINSN_vstr64("vstr d30, [r12]",      d30, 0xc2, r12, (long) numbers + 8, 0);
-    TESTINSN_vstr64("vstr d22, [r9, #+8]", d22, 0xd4, r9, (long) numbers + 8, 8);
+    TESTINSN_vstr64("vstr d22, [r9, #+8]",  d22, 0xd4, r9,  (long) numbers + 8, 8);
     TESTINSN_vstr64("vstr d29, [r2, #-8]",  d29, 0x00, r2,  (long) numbers + 8, -8);
     TESTINSN_vstr64("vstr d8,  [r8, #+8]",  d8,  0x11, r8,  (long) numbers + 8, 8);
     TESTINSN_vstr64("vstr d11, [r12, #-4]", d11, 0x22, r12, (long) numbers + 8, -4);
     TESTINSN_vstr64("vstr d18, [r3]",       d18, 0x33, r3,  (long) numbers + 8, 0);
     TESTINSN_vstr64("vstr d5,  [r10, #+8]", d5,  0x99, r10, (long) numbers + 8, 8);
     TESTINSN_vstr64("vstr d17, [r10]",      d17, 0x77, r10, (long) numbers + 8, 0);
-    TESTINSN_vstr64("vstr d9,  [r9, #-4]", d9,  0xee, r9, (long) numbers + 8, -4);
+    TESTINSN_vstr64("vstr d9,  [r9, #-4]",  d9,  0xee, r9,  (long) numbers + 8, -4);
     TESTINSN_vstr64("vstr d29, [r4, #-8]",  d29, 0xff, r4,  (long) numbers + 8, -8);
     TESTINSN_vstr64("vstr d10, [r3, #+4]",  d10, 0xbc, r3,  (long) numbers + 8, 4);
     TESTINSN_vstr64("vstr d21, [r6, #+4]",  d21, 0x48, r6,  (long) numbers + 8, 4);
     TESTINSN_vstr64("vstr d8,  [r4]",       d8,  0x1f, r4,  (long) numbers + 8, 0);
     TESTINSN_vstr64("vstr d19, [r0, #-8]",  d19, 0xf9, r0,  (long) numbers + 8, -8);
     TESTINSN_vstr32("vstr s9,  [r6,  #+4]", s9,  r6,  (long) numbers + 8, 4);
-    TESTINSN_vstr32("vstr s21, [r9, #-4]", s21, r9, (long) numbers + 8, -4);
+    TESTINSN_vstr32("vstr s21, [r9, #-4]",  s21, r9,  (long) numbers + 8, -4);
     TESTINSN_vstr32("vstr s4,  [r3,  #+8]", s4,  r3,  (long) numbers + 8, 8);
     TESTINSN_vstr32("vstr s19, [r4,  #-8]", s19, r4,  (long) numbers + 8, -8);
     TESTINSN_vstr32("vstr s29, [r8]",       s29, r8,  (long) numbers + 8, 0);
@@ -2172,7 +2172,7 @@ void VFPMain(void)
     TESTINSN_VSTMIAnoWB("vstmia r5,  {d11}", r5,  d11, 0x32);
     TESTINSN_VSTMIAnoWB("vstmia r6,  {d4}",  r6,  d4, 0x10);
     TESTINSN_VSTMIAnoWB("vstmia r10, {d9}",  r10, d9, 0x4f);
-    TESTINSN_VSTMIAnoWB("vstmia r9, {d29}", r9, d29, 0x97);
+    TESTINSN_VSTMIAnoWB("vstmia r9,  {d29}", r9, d29, 0x97);
     TESTINSN_VSTMIAnoWB("vstmia r10, {d17}", r10, d17, 0xaa);
     TESTINSN_VSTMIAnoWB("vstmia r5,  {d5}",  r5,  d5, 0x2b);
     TESTINSN_VSTMIAnoWB("vstmia r9,  {d7}",  r9,  d7, 0x7b);
@@ -2188,7 +2188,7 @@ void VFPMain(void)
     TESTINSN_VSTMIAnoWB32("vstmia r5,  {s11}", r5,  s11, f2u(NAN));
     TESTINSN_VSTMIAnoWB32("vstmia r6,  {s4}",  r6,  s4,  0x10ccb);
     TESTINSN_VSTMIAnoWB32("vstmia r10, {s9}",  r10, s9,  0x4f543);
-    TESTINSN_VSTMIAnoWB32("vstmia r9, {s29}", r9, s29, 0x97001a);
+    TESTINSN_VSTMIAnoWB32("vstmia r9,  {s29}", r9,  s29, 0x97001a);
     TESTINSN_VSTMIAnoWB32("vstmia r10, {s17}", r10, s17, 0xaa45f);
     TESTINSN_VSTMIAnoWB32("vstmia r5,  {s5}",  r5,  s5,  f2u(NAN));
     TESTINSN_VSTMIAnoWB32("vstmia r9,  {s7}",  r9,  s7,  f2u(-INFINITY));
@@ -2206,7 +2206,7 @@ void VFPMain(void)
     TESTINSN_VSTMIAWB(r5,  d11, d13);
     TESTINSN_VSTMIAWB(r6,  d4,  d31);
     TESTINSN_VSTMIAWB(r10, d9,  d27);
-    TESTINSN_VSTMIAWB(r9, d29, d17);
+    TESTINSN_VSTMIAWB(r9,  d29, d17);
     TESTINSN_VSTMIAWB(r10, d17, d7);
     TESTINSN_VSTMIAWB(r5,  d5,  d8);
     TESTINSN_VSTMIAWB(r9,  d7,  d16);
@@ -2219,7 +2219,7 @@ void VFPMain(void)
     TESTINSN_VSTMIAWB32(r8,  s7,  s10);
     TESTINSN_VSTMIAWB32(r4,  s30, s13);
     TESTINSN_VSTMIAWB32(r6,  s17, s17);
-    TESTINSN_VSTMIAWB32(r9, s11, s21);
+    TESTINSN_VSTMIAWB32(r9,  s11, s21);
     TESTINSN_VSTMIAWB32(r9,  s8,  s30);
     TESTINSN_VSTMIAWB32(r3,  s12, s9);
     TESTINSN_VSTMIAWB32(r6,  s6,  s11);
@@ -2229,7 +2229,7 @@ void VFPMain(void)
 
     printf("---- VLDM (Decrement Before) ----\n");
     TESTINSN_VLDMDB(r4,  d11, d23);
-    TESTINSN_VLDMDB(r9, d29, d12);
+    TESTINSN_VLDMDB(r9,  d29, d12);
     TESTINSN_VLDMDB(r9,  d0,  d30);
     TESTINSN_VLDMDB(r12, d8,  d24);
     TESTINSN_VLDMDB(r3,  d27, d13);
@@ -2263,7 +2263,7 @@ void VFPMain(void)
     TESTINSN_vmov_core_single("vmov r2,  s5",  r2,  s5,  0xab45e7);
     TESTINSN_vmov_core_single("vmov r5,  s15", r5,  s15, 0x00add12);
     TESTINSN_vmov_core_single("vmov r8,  s11", r8,  s11, 0x876450ff);
-    TESTINSN_vmov_core_single("vmov r9,  s5",  r9, s5,  0xffff);
+    TESTINSN_vmov_core_single("vmov r9,  s5",  r9,  s5,  0xffff);
     TESTINSN_vmov_core_single("vmov r10, s9",  r10, s9,  0x87d34f);
     TESTINSN_vmov_core_single("vmov r9,  s10", r9,  s10, 0x00ffff);
     TESTINSN_vmov_core_single("vmov r6,  s8",  r6,  s8,  0xad4f8);
@@ -2313,8 +2313,8 @@ void VFPMain(void)
     TESTINSN_vmov_2single_2core("vmov s20, s21, r10, r9", s20, s21, r10, r9, f2u(0), f2u(NAN) - 1);
 #endif
 
-    TESTINSN_vmov_2core_2single("vmov r12,  r9, s12, s13", r12, r9, s12, s13, 0x4000aad, 0xaffff);
-    TESTINSN_vmov_2core_2single("vmov  r0,  r9, s12, s13", r0,  r9, s12, s13, 0x40ee56d, 0x123ff);
+    TESTINSN_vmov_2core_2single("vmov r12, r9, s12, s13", r12, r9, s12, s13, 0x4000aad, 0xaffff);
+    TESTINSN_vmov_2core_2single("vmov  r0, r9, s12, s13", r0,  r9, s12, s13, 0x40ee56d, 0x123ff);
     TESTINSN_vmov_2core_2single("vmov r12, r9, s12, s13", r12, r9, s12, s13, 0x4000aad, 0xaffff);
     TESTINSN_vmov_2core_2single("vmov r10, r9, s20, s21", r10, r9, s20, s21, f2u(NAN), f2u(NAN));
     TESTINSN_vmov_2core_2single("vmov r10, r9, s20, s21", r10, r9, s20, s21, f2u(NAN), f2u(INFINITY));
@@ -2342,13 +2342,13 @@ void VFPMain(void)
     TESTINSN_vmov_double_2core("vmov d3,  r6,  r9",  d3,  r6,  r9,  0x43252acc, 0x45bbd);
     TESTINSN_vmov_double_2core("vmov d4,  r10, r2",  d4,  r10, r2,  0x1243b4, 0x237ffb);
     TESTINSN_vmov_double_2core("vmov d21, r1,  r6",  d21, r1,  r6,  0x30cc4, 0x314c043);
-    TESTINSN_vmov_double_2core("vmov d30, r9, r9", d30, r9, r9, 0x08ddf, 0x87bbca);
+    TESTINSN_vmov_double_2core("vmov d30, r9,  r9",  d30, r9,  r9,  0x08ddf, 0x87bbca);
     TESTINSN_vmov_double_2core("vmov d29, r3,  r5",  d29, r3,  r5,  0xaaa0, 0xbbb1);
     TESTINSN_vmov_double_2core("vmov d16, r8,  r8",  d16, r8,  r8,  0xaa455bb, 0x13434);
-    TESTINSN_vmov_double_2core("vmov d17, r12, r9", d17, r12, r9, 0x004003, 0x452bbc1);
+    TESTINSN_vmov_double_2core("vmov d17, r12, r9",  d17, r12, r9,  0x004003, 0x452bbc1);
     TESTINSN_vmov_double_2core("vmov d9,  r9,  r0",  d9,  r9,  r0,  0x134c, 0x41ffb6);
     TESTINSN_vmov_double_2core("vmov d7,  r0,  r6",  d7,  r0,  r6,  0x35425dcc, 0x0876c43);
-    TESTINSN_vmov_double_2core("vmov d13, r3,  r9", d13, r3,  r9, f2u0(NAN), f2u1(NAN));
+    TESTINSN_vmov_double_2core("vmov d13, r3,  r9",  d13, r3,  r9,  f2u0(NAN), f2u1(NAN));
     TESTINSN_vmov_double_2core("vmov d19, r6,  r5",  d19, r6,  r5,  f2u0(INFINITY), f2u1(INFINITY));
     TESTINSN_vmov_double_2core("vmov d0,  r2,  r6",  d0,  r2,  r6,  f2u0(-INFINITY), f2u1(-INFINITY));
 #endif
