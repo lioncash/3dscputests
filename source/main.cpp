@@ -205,6 +205,7 @@ int main(int argc, char **argv)
 				VFPMain();
 				devoptab_list[STD_OUT] = &console_tab;
 				printf("Done!\n");
+				fclose(f);
 			}
 			else
 			{
@@ -221,6 +222,7 @@ int main(int argc, char **argv)
 				DumpCP15Registers(false);
 				devoptab_list[STD_OUT] = &console_tab;
 				printf("Done!\n");
+				fclose(f);
 			}
 			else
 			{
@@ -237,6 +239,7 @@ int main(int argc, char **argv)
 				DumpCP15Registers(true);
 				devoptab_list[STD_OUT] = &console_tab;
 				printf("Done!\n");
+				fclose(f);
 			}
 			else
 			{
