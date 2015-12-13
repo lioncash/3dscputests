@@ -5,9 +5,12 @@
 #include <string.h>
 #include <sys/iosupport.h>
 
+// Initialize and set up all things related to devoptab printf
+// outputting to files.
+
 static FILE* f = nullptr;
 
-static ssize_t file_write(_reent* r, int fd, const char* ptr, size_t len)
+static ssize_t file_write(_reent*, int, const char* ptr, size_t len)
 {
 	if (len > 1)
 	{
@@ -78,12 +81,12 @@ void ThumbMain(void);
 void V6MediaMain(void);
 void VFPMain(void);
 
-int main(int argc, char **argv)
+int main(int argc, char** argv)
 {
 	// Initialize services
 	srvInit();
 	aptInit();
-	hidInit(nullptr);
+	hidInit();
 	gfxInitDefault();
 	fsInit(); //needed for filesystem stuff
 	sdmcInit();

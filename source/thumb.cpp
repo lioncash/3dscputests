@@ -1,8 +1,3 @@
-
-/* How to compile:
-   gcc -O -g -Wall -mcpu=cortex-a8 -o v6intThumb none/tests/arm/v6intThumb.c
-*/
-
 #include <cstdio>
 
 static int gen_cvin(int cvin)
@@ -12,8 +7,7 @@ static int gen_cvin(int cvin)
     return r;
 }
 
-/* test macros to generate and output the result of a single instruction */
-
+// test macros to generate and output the result of a single instruction
 
 // 1 registers in the insn, zero args: rD = op()
 #define TESTINST1(instruction, RD, cvin) \

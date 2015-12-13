@@ -1,11 +1,6 @@
-
-/* How to compile:
-   gcc -O -g -Wall -mcpu=cortex-a8 -o testarmv6int testarmv6int.c
-*/
-
 #include <cstdio>
 
-/* test macros to generate and output the result of a single instruction */
+// test macros to generate and output the result of a single instruction
 #define TESTINST2(instruction, RMval, RD, RM, carryin) \
 { \
     unsigned int out; \

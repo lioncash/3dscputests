@@ -1,4 +1,3 @@
-
 /* Can be compiled both as ARM or Thumb using
    gcc -Wall -g -O0 -mcpu=cortex-a8 -mfpu=neon -mfloat-abi=softfp -m{arm,thumb} -o vfp vfp.c
 */
@@ -15,7 +14,6 @@
 #define QNAN_F64       std::numeric_limits<double>::quiet_NaN()
 #define SNAN_F32       std::numeric_limits<float>::signaling_NaN()
 #define SNAN_F64       std::numeric_limits<double>::signaling_NaN()
-
 
 #ifdef __thumb__
 #define MOVE_to_FPSCR_from_R4 \

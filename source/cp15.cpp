@@ -9,16 +9,16 @@
 
 void DumpCP15Registers(bool print_system_mode_regs)
 {
-    unsigned int c0[16] = {0};
-    unsigned int c1[3] = {0};
-    unsigned int c2[3] = {0};
+    unsigned int c0[16] = {};
+    unsigned int c1[3] = {};
+    unsigned int c2[3] = {};
     unsigned int c3 = 0;
-    unsigned int c5[2] = {0};
-    unsigned int c6[2] = {0};
+    unsigned int c5[2] = {};
+    unsigned int c6[2] = {};
     unsigned int paddr_reg = 0;
-    unsigned int c10[3] = {0};
-    unsigned int c13[5] = {0};
-    unsigned int c15[9] = {0};
+    unsigned int c10[3] = {};
+    unsigned int c13[5] = {};
+    unsigned int c15[9] = {};
 
     if (print_system_mode_regs) {
         asm volatile("MRC p15, 0, %[out], c0, c0, 0" : [out]"=&r"(c0[0])  ); // Main ID
@@ -44,7 +44,6 @@ void DumpCP15Registers(bool print_system_mode_regs)
         asm volatile("MRC p15, 0, %[out], c1, c0, 2" : [out]"=&r"(c1[2])  ); // Coprocessor access control register
 
         // NOTE: These can be read/written, so these aren't constant values.
-        
         asm volatile("MRC p15, 0, %[out], c2, c0, 0" : [out]"=&r"(c2[0])  ); // Translation table base register 0
         asm volatile("MRC p15, 0, %[out], c2, c0, 1" : [out]"=&r"(c2[1])  ); // Translation table base register 1
         asm volatile("MRC p15, 0, %[out], c2, c0, 2" : [out]"=&r"(c2[2])  ); // Translation table base control
@@ -57,7 +56,6 @@ void DumpCP15Registers(bool print_system_mode_regs)
         asm volatile("MRC p15, 0, %[out], c5, c0, 1" : [out]"=&r"(c5[1])  ); // Instruction fault status register
 
         // NOTE: These can be read/written, so these aren't constant values.
-        
         asm volatile("MRC p15, 0, %[out], c6, c0, 0" : [out]"=&r"(c6[0])  ); // Fault address register
         asm volatile("MRC p15, 0, %[out], c6, c0, 1" : [out]"=&r"(c6[1])  ); // Watchpoint fault address register
 

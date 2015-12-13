@@ -1,10 +1,3 @@
-
-/* How to compile:
-   gcc -g -Wall -mcpu=cortex-a8 -o v6mediaA -marm none/tests/arm/v6media.c
-   or
-   gcc -g -Wall -mcpu=cortex-a8 -o v6mediaT -mthumb none/tests/arm/v6media.c
-*/
-
 #include <cstdio>
 
 static int gen_cin(int cin)
