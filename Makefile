@@ -53,7 +53,7 @@ CFLAGS	:=	-g -Wall -O2 \
 
 CFLAGS	+=	$(INCLUDE) -DARM11 -D_3DS
 
-CXXFLAGS	:= $(CFLAGS) -std=gnu++11 -fno-rtti -fno-exceptions
+CXXFLAGS	:= $(CFLAGS) -std=c++14 -fno-rtti -fno-exceptions
 
 ASFLAGS	:=	-g $(ARCH) $(INCLUDE)
 LDFLAGS	=	-specs=3dsx.specs -g $(ARCH) -Wl,-Map,$(notdir $*.map)
