@@ -136,12 +136,8 @@ static int gen_cin(int cin)
 #define TESTCARRY { int c = 0; for (c = 0; c < 2; c++) {
 #define TESTCARRYEND }}
 
-
-
-
 void V6MediaMain(void)
 {
-  
   printf("MUL\n");
   TESTINST3("mul  r0, r1, r2", 0,          0,          r0, r1, r2, 0);
   TESTINST3("mul  r0, r1, r2", 0xffffffff, 0,          r0, r1, r2, 0);
@@ -345,7 +341,7 @@ void V6MediaMain(void)
   TESTINST2("bfc  r0, #31, #1", 0xFFFFFFFF, r0, r1, 0);
 
   printf("------------ SBFX ------------\n");
-  // sbfx rDst, rSrc, #lsb, #width 
+  // sbfx rDst, rSrc, #lsb, #width
   TESTINST2("sbfx  r0, r1, #0, #1", 0x00000000, r0, r1, 0);
   TESTINST2("sbfx  r0, r1, #0, #1", 0x00000001, r0, r1, 0);
   TESTINST2("sbfx  r0, r1, #1, #1", 0x00000000, r0, r1, 0);
@@ -2273,7 +2269,6 @@ void V6MediaMain(void)
 
   printf("------------ SMLABB, SMLATT, SMLATB, SMLABT ------------\n");
   // smlabb rD, rN, rM, rA
-  
   TESTINST4("smlabb  r0, r1, r2, r3", 0x00030000, 0x00040000, 0x00000000, r0,r1,r2,r3, 0);
   TESTINST4("smlabb  r0, r1, r2, r3", 0x00030001, 0x00040002, 0x00007fff, r0,r1,r2,r3, 0);
   TESTINST4("smlabb  r0, r1, r2, r3", 0x00038001, 0x00047fff, 0x00005fff, r0,r1,r2,r3, 0);
