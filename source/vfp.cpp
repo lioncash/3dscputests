@@ -1,7 +1,3 @@
-/* Can be compiled both as ARM or Thumb using
-   gcc -Wall -g -O0 -mcpu=cortex-a8 -mfpu=neon -mfloat-abi=softfp -m{arm,thumb} -o vfp vfp.c
-*/
-
 #include <cfloat>
 #include <cmath>
 #include <cstdio>
