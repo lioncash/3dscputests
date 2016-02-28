@@ -1058,11 +1058,14 @@ void VFPMain(void)
 
 // Enable for testing float instructions with
 // Default NaN mode and Flush-To-Zero mode.
+//
+// This essentially enables RunFast mode.
 #if 0
     asm volatile (
       "VMRS r1, FPSCR\n"
-      "ORR  r1, r1, #(1 << 24)\n"
-      "ORR  r1, r1, #(1 << 25)\n"
+      "ORR  r1, r1, #(1 << 24)\n" // Enable flush-to-zero
+      "ORR  r1, r1, #(1 << 25)\n" // Enable default NaN
+      "BIC  r1, r1, #0x9F00\n"    // Clear exception-enable bits.
       "VMSR FPSCR, r1\n"
       );
 #endif
