@@ -1,6 +1,6 @@
 # 3DS CPU Tests
 
-An application I use to verify hardware behavior in citra.
+An application I use to verify CPU behavior in citra.
 This mostly cobbles Valgrind's hardware tests into a 3DS application that can be run through Homebrew Browser.
 
 #### How To Build It
