@@ -6,9 +6,10 @@ This mostly cobbles Valgrind's hardware tests into a 3DS application that can be
 #### How To Build It
 
 1. Install the latest devkitARM.
-2. Clone the project.
-3. Run `make` inside the directory.
-4. Go make your favorite tea or coffee, because it takes a bit to build.
+2. Set the DEVKITPRO and DEVKITARM environment variables.
+3. Clone the project.
+4. Run `make` inside the directory.
+5. Go make your favorite tea or coffee, because it takes a bit to build.
 
 #### How To Use It
 
