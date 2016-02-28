@@ -10,6 +10,7 @@ This mostly cobbles Valgrind's hardware tests into a 3DS application that can be
 3. Clone the project.
 4. Run `make` inside the directory.
 5. Go make your favorite tea or coffee, because it takes a bit to build.
+6. I'm not kidding, if you're really feeling some green tea, go make it.
 
 #### How To Use It
 
