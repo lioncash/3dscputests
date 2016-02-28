@@ -17,3 +17,11 @@ This mostly cobbles Valgrind's hardware tests into a 3DS application that can be
 3. Run the same tests on citra.
 4. Diff the two output files with one another (preferably with colordiff or something that doesn't output in monocolor).
 5. If the difference for the citra-generated file differs from the 3DS one. Then your emulation is innaccurate.
+
+
+#### Notes
+
+- In the VFP test file, at the beginning of `VFPMain`, there is some ifdef'd out assembly.
+  - This assembly enables RunFast mode for the VFP, which can be useful to test against
+    as some games (Cubic Ninja for example) will enable it, since perfect IEEE compliance
+    is not always necessary.
