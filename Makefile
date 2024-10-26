@@ -51,7 +51,7 @@ ARCH	:=	-march=armv6k -mtune=mpcore -mfloat-abi=hard -mword-relocations
 CFLAGS	:=	-g -Wall -O2 \
 			$(ARCH)
 
-CFLAGS	+=	$(INCLUDE) -DARM11 -D_3DS
+CFLAGS	+=	$(INCLUDE) -D__3DS__
 
 CXXFLAGS	:= $(CFLAGS) -std=c++14 -fno-rtti -fno-exceptions
 
