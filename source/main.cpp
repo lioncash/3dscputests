@@ -10,7 +10,7 @@
 
 static FILE* f = nullptr;
 
-static ssize_t file_write(_reent*, int, const char* ptr, size_t len)
+static ssize_t file_write(_reent*, void*, const char* ptr, size_t len)
 {
     if (len > 1)
     {
@@ -89,7 +89,6 @@ int main(int argc, char** argv)
     hidInit();
     gfxInitDefault();
     fsInit(); //needed for filesystem stuff
-    sdmcInit();
 
     PrintConsole topScreen;
     PrintConsole bottomScreen;
@@ -256,7 +255,6 @@ int main(int argc, char** argv)
     }
 
     // Exit services
-    sdmcExit();
     fsExit();
     gfxExit();
     hidExit();
