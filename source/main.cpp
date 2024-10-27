@@ -10,36 +10,65 @@
 
 static FILE* f = nullptr;
 
-static ssize_t file_write(_reent*, void*, const char* ptr, size_t len) {
-    if (len > 1) {
+static ssize_t file_write(_reent*, int, const char* ptr, size_t len)
+{
+    if (len > 1)
+    {
         fprintf(f, "%.*s", len, ptr);
     }
     return len;
 }
 
 static const devoptab_t dotab_file = {
-    "file",  0,       nullptr, nullptr, file_write, nullptr, nullptr,
-    nullptr, nullptr, nullptr, nullptr, nullptr,    nullptr, nullptr,
-    0,       nullptr, nullptr, nullptr, nullptr,    nullptr, nullptr,
-    nullptr, nullptr, nullptr, nullptr, nullptr};
+    "file",
+    0,
+    nullptr,
+    nullptr,
+    file_write,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    0,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr
+};
 
-static bool TryOpeningNewFile(const char* path) {
+static bool TryOpeningNewFile(const char* path)
+{
     f = fopen(path, "w");
     return (f != nullptr);
 }
 
 // Used to store the CPSR processor mode string.
 // Visually displaying what mode the processor is in can be helpful.
-static const char* GetCPSRMode() {
+static const char* GetCPSRMode()
+{
     unsigned int cpsr = 0;
-    asm volatile("MRS %[out], CPSR" : [out] "=&r"(cpsr));
+    asm volatile ("MRS %[out], CPSR" : [out]"=&r"(cpsr));
 
     // The mode bits in the CPSR are the bottom 5 bits.
     unsigned int mode_bits = (cpsr & 0x1F);
 
     // These are the only relevant modes to check for.
-    if (mode_bits & 16) return "User";
-    if (mode_bits & 31) return "System";
+    if (mode_bits & 16)
+        return "User";
+    if (mode_bits & 31)
+        return "System";
 
     // If we hit here, something is very off.
     return "3DS is drunk";
@@ -52,14 +81,15 @@ void ThumbMain(void);
 void V6MediaMain(void);
 void VFPMain(void);
 
-int main(int argc, char** argv) {
+int main(int argc, char** argv)
+{
     // Initialize services
     srvInit();
     aptInit();
     hidInit();
     gfxInitDefault();
-    fsInit(); // needed for filesystem stuff
-    // sdmcInit();
+    fsInit(); //needed for filesystem stuff
+    sdmcInit();
 
     PrintConsole topScreen;
     PrintConsole bottomScreen;
@@ -68,9 +98,9 @@ int main(int argc, char** argv) {
     consoleInit(GFX_BOTTOM, &bottomScreen);
     consoleSelect(&topScreen);
 
-    // ctrulib doesn't actually expose their devoptab for console output so we
-    // have to store that ourselves, as we flip between writing to the SD card
-    // and printing text to the console. Kinda crappy, but meh.
+    // ctrulib doesn't actually expose their devoptab for console output so we have to store that
+    // ourselves, as we flip between writing to the SD card and printing text to the console.
+    // Kinda crappy, but meh.
     const devoptab_t console_tab = *devoptab_list[STD_OUT];
 
     printf("ARM Instruction Tests based off of Valgrind tests.\n\n\n");
@@ -89,67 +119,87 @@ int main(int argc, char** argv) {
     consoleSelect(&bottomScreen);
 
     // TODO: Below could probably be cleaned up a little.
-    while (aptMainLoop()) {
+    while (aptMainLoop())
+    {
         hidScanInput();
         const u32 kDown = hidKeysDown();
 
         // break in order to return to hbmenu
-        if (kDown & KEY_START) break;
+        if (kDown & KEY_START)
+            break;
 
-        if (kDown & KEY_A) {
-            if (TryOpeningNewFile("sdmc:/media_tests.txt")) {
+        if (kDown & KEY_A)
+        {
+            if (TryOpeningNewFile("sdmc:/media_tests.txt"))
+            {
                 printf("Running media tests...\n");
                 devoptab_list[STD_OUT] = &dotab_file;
                 V6MediaMain();
                 devoptab_list[STD_OUT] = &console_tab;
                 printf("Done!\n");
                 fclose(f);
-            } else {
+            }
+            else
+            {
                 printf("Unable to create media tests output file.\n");
             }
         }
 
-        if (kDown & KEY_B) {
-            if (TryOpeningNewFile("sdmc:/integer_tests.txt")) {
+        if (kDown & KEY_B)
+        {
+            if (TryOpeningNewFile("sdmc:/integer_tests.txt"))
+            {
                 printf("Running integer tests...\n");
                 devoptab_list[STD_OUT] = &dotab_file;
                 IntegerMain();
                 devoptab_list[STD_OUT] = &console_tab;
                 printf("Done!\n");
                 fclose(f);
-            } else {
+            }
+            else
+            {
                 printf("Unable to create integer tests output file.\n");
             }
         }
 
-        if (kDown & KEY_X) {
-            if (TryOpeningNewFile("sdmc:/vfp_tests.txt")) {
+        if (kDown & KEY_X)
+        {
+            if (TryOpeningNewFile("sdmc:/vfp_tests.txt"))
+            {
                 printf("Running VFP tests...\n");
                 devoptab_list[STD_OUT] = &dotab_file;
                 VFPMain();
                 devoptab_list[STD_OUT] = &console_tab;
                 printf("Done!\n");
                 fclose(f);
-            } else {
+            }
+            else
+            {
                 printf("Unable to create VFP tests output file.\n");
             }
         }
 
-        if (kDown & KEY_Y) {
-            if (TryOpeningNewFile("sdmc:/thumb_tests.txt")) {
+        if (kDown & KEY_Y)
+        {
+            if (TryOpeningNewFile("sdmc:/thumb_tests.txt"))
+            {
                 printf("Running Thumb tests...\n");
                 devoptab_list[STD_OUT] = &dotab_file;
                 ThumbMain();
                 devoptab_list[STD_OUT] = &console_tab;
                 printf("Done!");
                 fclose(f);
-            } else {
+            }
+            else
+            {
                 printf("Unable to create output file.\n");
             }
         }
 
-        if (kDown & KEY_SELECT) {
-            if (TryOpeningNewFile("sdmc:/all_tests.txt")) {
+        if (kDown & KEY_SELECT)
+        {
+            if (TryOpeningNewFile("sdmc:/all_tests.txt"))
+            {
                 printf("Running all tests...\n");
                 devoptab_list[STD_OUT] = &dotab_file;
                 V6MediaMain();
@@ -159,33 +209,43 @@ int main(int argc, char** argv) {
                 devoptab_list[STD_OUT] = &console_tab;
                 printf("Done!\n");
                 fclose(f);
-            } else {
+            }
+            else
+            {
                 printf("Unable to create output file for all tests.\n");
             }
         }
 
-        if (kDown & KEY_R) {
-            if (TryOpeningNewFile("sdmc:/user_cp15_regs.txt")) {
+        if (kDown & KEY_R)
+        {
+            if (TryOpeningNewFile("sdmc:/user_cp15_regs.txt"))
+            {
                 printf("Dumping user-accessible CP15 registers...\n");
                 devoptab_list[STD_OUT] = &dotab_file;
                 DumpCP15Registers(false);
                 devoptab_list[STD_OUT] = &console_tab;
                 printf("Done!\n");
                 fclose(f);
-            } else {
+            }
+            else
+            {
                 printf("Unable to create CP15 regs output file.\n");
             }
         }
 
-        if (kDown & KEY_L) {
-            if (TryOpeningNewFile("sdmc:/all_cp15_regs.txt")) {
+        if (kDown & KEY_L)
+        {
+            if (TryOpeningNewFile("sdmc:/all_cp15_regs.txt"))
+            {
                 printf("Dumping all CP15 registers...\n");
                 devoptab_list[STD_OUT] = &dotab_file;
                 DumpCP15Registers(true);
                 devoptab_list[STD_OUT] = &console_tab;
                 printf("Done!\n");
                 fclose(f);
-            } else {
+            }
+            else
+            {
                 printf("Unable to create CP15 regs output file.\n");
             }
         }
@@ -196,7 +256,7 @@ int main(int argc, char** argv) {
     }
 
     // Exit services
-    // sdmcExit();
+    sdmcExit();
     fsExit();
     gfxExit();
     hidExit();
@@ -204,3 +264,4 @@ int main(int argc, char** argv) {
     srvExit();
     return 0;
 }
+
